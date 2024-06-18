@@ -5,7 +5,8 @@ def main():
     base_dir = pathlib.Path(__file__).resolve().parent.parent.parent
     caminho_excel = base_dir / 'miniProjeto2' / 'data' / "dadosConsolidados.xlsx"
 
-    df_excel = ler_excel(caminho_excel)
+    #df_excel = ler_excel(caminho_excel)
+    df_excel = pd.read_excel(caminho_excel)
     if df_excel is None:
         return
 
