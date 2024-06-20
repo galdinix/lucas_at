@@ -1,7 +1,6 @@
-import sys
-import pathlib
+
 import pandas as pd
-from sqlalchemy.orm import Session
+from sqlalchemy import create_engine, inspect
 from database import*
 from models import *
 
@@ -55,15 +54,15 @@ def jogos_com_mais_aparicoes(lista_conjuntos_jogos):
         print(f"Erro ao encontrar jogos com mais aparições: {e}")
         return set()
 
-def exportar_para_sqlalchemy(db: Session, dados):
+def exportar_para_sql(session, dados):
     try:
         for tipo, jogos in dados.items():
             for jogo in jogos:
                 db_jogo = Jogo(tipo=tipo, jogo=jogo)
-                db.merge(db_jogo)
-        db.commit()
+                session.merge(db_jogo)
+        session.commit()
     except Exception as e:
         print(f"Erro ao exportar para SQLite: {e}")
-        db.rollback()
+        session.rollback()
 
 

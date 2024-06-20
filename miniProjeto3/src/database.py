@@ -3,21 +3,19 @@ from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import sessionmaker
 import pathlib
 
-base_dir = pathlib.Path(__file__).resolve().parent.parent.parent
-DATABASE_URL = f"sqlite:///{base_dir / 'miniProjeto3' / 'data' / 'jogos.db'}"
-
-engine = create_engine(DATABASE_URL, connect_args={"check_same_thread": False})
-SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)
 Base = declarative_base()
 
-
-
-def get_db():
-    db = SessionLocal()
+def conectar_banco():
     try:
-        yield db
-    finally:
-        db.close()
-
-def oi():
-    print('oi')
+        base_dir = pathlib.Path(__file__).resolve().parent.parent.parent
+        DATABASE_URL = f"sqlite:///{base_dir / 'miniProjeto3' / 'data' / 'jogos.db'}"
+        engine = create_engine(DATABASE_URL, connect_args={"check_same_thread": False})
+        Session = sessionmaker(bind=engine)
+        session = Session()
+        return engine, session
+    except Exception as ex:
+        print(f'Error:{ex}')
+ 
+def desconectar_bd(session):
+    if (session):
+        session.close_all()

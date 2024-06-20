@@ -1,7 +1,5 @@
 import pathlib
 import sys
-import requests
-from processarDados import*
 from utils import*
 from database import*
 import time
@@ -20,7 +18,7 @@ def main():
     print("aguardando consulta a api")
     for item in df_jogos['jogo']:
         result.append(consultar_api_mercadolivre(item))
-        #time.sleep(0.3)
+        time.sleep(0.3)
     print('consulta realizada com sucesso!!!')
     engine, session = conectar_banco()
     Base.metadata.create_all(engine)

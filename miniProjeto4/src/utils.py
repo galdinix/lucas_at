@@ -1,7 +1,6 @@
 import requests
 import pandas as pd
 from sqlalchemy import create_engine, inspect
-import pathlib
 from database import*
 from models import*
 
@@ -11,21 +10,24 @@ def consultar_api_mercadolivre(jogo):
         response = requests.get(url)
         response.raise_for_status()  # Lança uma exceção para códigos de status HTTP diferentes de 2xx
         data = response.json()
-        
         resultados = []
-        for result in data.get('results'):
-            nome = result.get('title')
-            preco = result.get('price', 0)
-            permalink = result.get('permalink', '')
-            resultados.append({'nome': nome, 'preco': preco, 'permalink': permalink})        
+        if data['results']:
+            try:
+                result = data['results'][0]
+                nome = result['title']
+                preco = result['price']
+                permalink = result['permalink']
+                resultados.append({'nome': nome, 'preco': preco, 'permalink': permalink})
+            except Exception as ex:
+                print(f'Erro: {ex}')         
         return resultados
     except requests.exceptions.RequestException as e:
         print(f"Erro ao consultar API para o jogo {jogo}: {e}")
-        return 
+        return []
     except Exception as e:
         print(f"Ocorreu um erro inesperado ao consultar a API para o jogo {jogo}: {e}")
-        return 
-    
+        return []
+
 
 def obter_sql(DATABASE_URL):
     engine = create_engine(DATABASE_URL, echo=True)

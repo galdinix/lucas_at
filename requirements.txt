@@ -5,3 +5,5 @@ sqlalchemy
 webdriver-manager
 requests
 openpyxl
+lxml
+html5lib
