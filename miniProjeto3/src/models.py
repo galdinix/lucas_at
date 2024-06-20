@@ -1,8 +1,9 @@
-from sqlalchemy import Column, String
+from sqlalchemy import Column, String, Integer
 from database import*
 
 class Jogo(Base):
     __tablename__ = "jogos"
 
-    tipo = Column(String, primary_key=True, index=True)
-    jogo = Column(String, primary_key=True, index=True)
+    id_jogo = Column(Integer, primary_key=True)
+    tipo = Column(String)
+    jogo = Column(String)
